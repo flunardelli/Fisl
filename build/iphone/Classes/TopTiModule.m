@@ -22,12 +22,12 @@
 
 -(id)buildDate
 {
-	return @"05/15/11 17:26";
+	return @"05/11/11 16:54";
 }
 
 -(id)buildHash
 {
-	return @"e6afca8";
+	return @"578e1df...";
 }
 
 +(BOOL)shouldRegisterOnInit

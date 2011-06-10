@@ -280,7 +280,7 @@ void MyUncaughtExceptionHandler(NSException *exception)
 
 - (void)boot
 {
-	NSLog(@"[INFO] %@/%@ (%s.e6afca8)",TI_APPLICATION_NAME,TI_APPLICATION_VERSION,TI_VERSION_STR);
+	NSLog(@"[INFO] %@/%@ (%s.578e1df...)",TI_APPLICATION_NAME,TI_APPLICATION_VERSION,TI_VERSION_STR);
 	
 	sessionId = [[TiUtils createUUID] retain];
 	TITANIUM_VERSION = [[NSString stringWithCString:TI_VERSION_STR encoding:NSUTF8StringEncoding] retain];

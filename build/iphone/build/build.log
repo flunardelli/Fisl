@@ -1,0 +1,93 @@
+================================================================================
+Appcelerator Titanium Diagnostics Build Log
+The contents of this file are useful to send to Appcelerator Support if
+reporting an issue to help us understand your environment, build settings
+and aid in debugging. Please attach this log to any issue that you report.
+================================================================================
+
+Starting build at 06/10/11 19:28
+
+Build details:
+
+   timestamp=05/11/11 16:54
+   version=1.7.0
+   githash=578e1df...
+
+
+Script arguments:
+   /Library/Application Support/Titanium/mobilesdk/osx/1.7.0/iphone/builder.py
+   simulator
+   4.3
+   /Users/flunardelli/Documents/Titanium Studio Workspace/Fisl
+   com.lumea.fisl
+   Fisl
+   universal
+   iphone
+   
+
+Building from: /Library/Application Support/Titanium/mobilesdk/osx/1.7.0/iphone
+Platform: Darwin Kernel Version 10.7.0: Sat Jan 29 15:17:16 PST 2011; root:xnu-1504.9.37~1/RELEASE_I386
+
+Xcode path is: /Developer
+
+
+githash=578e1df..., existing_git_hash=578e1df...
+writing contents of /Users/flunardelli/Documents/Titanium Studio Workspace/Fisl/build/iphone/project.xcconfig:
+
+TI_VERSION=1.7.0
+TI_SDK_DIR=/Library/Application Support/Titanium/mobilesdk/osx/$(TI_VERSION)/iphone
+TI_APPID=com.lumea.fisl
+OTHER_LDFLAGS[sdk=iphoneos4*]=$(inherited) -weak_framework iAd
+OTHER_LDFLAGS[sdk=iphonesimulator4*]=$(inherited) -weak_framework iAd
+#include "module"
+
+old contents
+
+
++ writing debugger plist:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>host</key>
+	<string></string>
+	<key>port</key>
+	<string></string>
+</dict>
+</plist>
+
+
+Generated the following stylecode code:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>classes</key>
+		<dict>
+</dict>
+
+		<key>classes_density</key>
+		<dict>
+</dict>
+
+		<key>ids</key>
+		<dict>
+</dict>
+
+		<key>ids_density</key>
+		<dict>
+</dict>
+
+		<key>tags</key>
+		<dict>
+</dict>
+
+		<key>tags_density</key>
+		<dict>
+</dict>
+
+	</dict>
+</plist>
+Finishing build
