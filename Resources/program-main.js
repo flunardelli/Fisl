@@ -40,8 +40,42 @@ win.barColor = '#385292';
 
 
 
+/*
+ * trilha: Desktop e Distribuições
 
+sala: 41-A fisl 1
+Data: 2010-07-21 09:00:00
 
+título: LTSP-cluster : Large scale thin-clients deployments
+
+resumo: 
+LTSP-Cluster is an open source project aiming at deploying and managing a large number (several thousands) of multiplatform thin-clients over a network by adding a set of additional components to LTSP such as a load-balancer, and a central management and reporting interface.
+
+trilha
+Desktop e Distribuições
+
+autores
+Patrice Albaret, 
+Fernando Laudares Camargos, 
+Stéphane Graber
+
+duração
+60 minutos
+
+status
+confirmado
+ */
+
+var data = {
+	path: "Desktop e Distribuições",
+	room: "41-A fisl 1",
+	date: "2010-07-21 09:00:00",
+	title: "LTSP-cluster : Large scale thin-clients deployments",
+	resume: "LTSP-Cluster is an open source project aiming at deploying and managing a large number (several thousands) of multiplatform thin-clients over a network by adding a set of additional components to LTSP such as a load-balancer, and a central management and reporting interface.",
+	authors: ['Patrice Albaret','Fernando Laudares Camargos','Stéphane Graber'],
+	duration: "60 minutos",
+	status: "confirmado"
+};
 
 //
 // CREATE SEARCH BAR
@@ -122,52 +156,53 @@ for (var c=0;c<50;c++)
 	row.className = 'datarow';
 	row.clickName = 'row';
 
-	var photo = Ti.UI.createView({
-		backgroundImage:'/images/custom_tableview/user.png',
-		top:5,
-		left:10,
-		width:50,
-		height:50,
-		clickName:'photo'
-	});
+	// var photo = Ti.UI.createView({
+		// backgroundImage:'/images/custom_tableview/user.png',
+		// top:5,
+		// left:10,
+		// width:50,
+		// height:50,
+		// clickName:'photo'
+	// });
 
 	if (c % 10 == 0){		
 		row.header = "Section: " + c;
 	}
 	
 
-	row.add(photo);
+	//row.add(photo);
 
 
-	var user = Ti.UI.createLabel({
-		color:'#576996',
-		font:{fontSize:16,fontWeight:'bold', fontFamily:'Arial'},
-		left:70,
-		top:2,
-		height:30,
-		width:200,
-		clickName:'user',
-		text:'Fred Smith '+c
-	});
+	// var user = Ti.UI.createLabel({
+		// color:'#576996',
+		// font:{fontSize:16,fontWeight:'bold', fontFamily:'Arial'},
+		// left:70,
+		// top:2,
+		// height:30,
+		// width:200,
+		// clickName:'user',
+		// text:'Fred Smith '+c
+	// });
+// 
+	// row.filter = user.text;
+	// row.add(user);
 
-	row.filter = user.text;
-	row.add(user);
-
-	var fontSize = 16;
-	if (Titanium.Platform.name == 'android') {
-		fontSize = 14;
-	}
-	var comment = Ti.UI.createLabel({
-		color:'#222',
-		font:{fontSize:fontSize,fontWeight:'normal', fontFamily:'Arial'},
-		left:70,
-		top:21,
-		height:50,
-		width:200,
-		clickName:'comment',
-		text:'Got some fresh fruit, conducted some business, took a nap'
-	});
-	row.add(comment);
+// 
+	// var fontSize = 16;
+	// if (Titanium.Platform.name == 'android') {
+		// fontSize = 14;
+	// }
+	// var comment = Ti.UI.createLabel({
+		// color:'#222',
+		// font:{fontSize:fontSize,fontWeight:'normal', fontFamily:'Arial'},
+		// left:70,
+		// top:21,
+		// height:50,
+		// width:200,
+		// clickName:'comment',
+		// text:'Got some fresh fruit, conducted some business, took a nap'
+	// });
+	// row.add(comment);
 
 	var calendar = Ti.UI.createView({
 		backgroundImage:'/images/custom_tableview/eventsButton.png',
@@ -179,15 +214,15 @@ for (var c=0;c<50;c++)
 	});
 	row.add(calendar);
 
-	var button = Ti.UI.createView({
-		backgroundImage:'/images/custom_tableview/commentButton.png',
-		top:35,
-		right:5,
-		width:36,
-		clickName:'button',
-		height:34
-	});
-	row.add(button);
+	// var button = Ti.UI.createView({
+		// backgroundImage:'/images/custom_tableview/commentButton.png',
+		// top:35,
+		// right:5,
+		// width:36,
+		// clickName:'button',
+		// height:34
+	// });
+	// row.add(button);
 
 	var date = Ti.UI.createLabel({
 		color:'#999',
@@ -197,7 +232,7 @@ for (var c=0;c<50;c++)
 		height:20,
 		width:100,
 		clickName:'date',
-		text:'posted on 3/11'
+		text: data.date
 	});
 	row.add(date);
 

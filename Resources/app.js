@@ -1,35 +1,60 @@
 // this sets the background color of the master UIView (when there are no windows/tab groups on it)
 Titanium.UI.setBackgroundColor('#000');
 
-// create tab group
 var tabGroup = Titanium.UI.createTabGroup();
 
-var newsWin = Titanium.UI.createWindow({  
+var winNews = Titanium.UI.createWindow({  
     title:'News',
-    backgroundColor:'#fff'
+    backgroundColor:'#fff',
+    url: 'news-main.js'
 });
 
-var newsTab = Titanium.UI.createTab({  
-    icon:'KS_nav_ui.png',
+var tabNews = Titanium.UI.createTab({  
+    icon:'/images/KS_nav_ui.png',
     title:'News',
-    window:newsWin
+    window:winNews
 });
 
-var programWin = Titanium.UI.createWindow({  
+var winProgram = Titanium.UI.createWindow({  
     title:'Program',
     backgroundColor:'#fff',
     url: 'program-main.js'
 });
 
-var programTab = Titanium.UI.createTab({  
-    icon:'KS_nav_views.png',
+var tabProgram = Titanium.UI.createTab({  
+    icon:'/images/KS_nav_ui.png',
     title:'Program',
-    window:programWin
+    window:winProgram
+});
+
+var winEvent = Titanium.UI.createWindow({  
+    title:'Event',
+    backgroundColor:'#fff',
+    url: 'event-main.js'
+});
+
+var tabEvent = Titanium.UI.createTab({  
+    icon:'/images/KS_nav_ui.png',
+    title:'Event',
+    window:winEvent
+});
+
+var winSocial = Titanium.UI.createWindow({  
+    title:'Social',
+    backgroundColor:'#fff',
+    url: 'social-main.js'
+});
+
+var tabSocial = Titanium.UI.createTab({  
+    icon:'/images/KS_nav_ui.png',
+    title:'Social',
+    window:winSocial
 });
 
 
-tabGroup.addTab(programTab);  
-tabGroup.addTab(programWin);  
-
+tabGroup.addTab(tabNews);  
+tabGroup.addTab(tabProgram);  
+tabGroup.addTab(tabEvent);  
+tabGroup.addTab(tabSocial);  
 
 tabGroup.open();
