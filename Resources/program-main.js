@@ -66,10 +66,11 @@ status
 confirmado
  */
 
-var data = {
+var d = {
 	path: "Desktop e Distribuições",
 	room: "41-A fisl 1",
-	date: "2010-07-21 09:00:00",
+	datefull: "2010-07-21 09:00:00",
+	time: "09:30 - 10:00",
 	title: "LTSP-cluster : Large scale thin-clients deployments",
 	resume: "LTSP-Cluster is an open source project aiming at deploying and managing a large number (several thousands) of multiplatform thin-clients over a network by adding a set of additional components to LTSP such as a load-balancer, and a central management and reporting interface.",
 	authors: ['Patrice Albaret','Fernando Laudares Camargos','Stéphane Graber'],
@@ -172,20 +173,29 @@ for (var c=0;c<50;c++)
 
 	//row.add(photo);
 
+	var headerView = Ti.UI.createView({
+		width:  'auto',
+		opacity: 0.5
+	});
+	
+	var footerView = Ti.UI.createView({
+		width:  'auto',
+		opacity: 0.5
+	});
 
-	// var user = Ti.UI.createLabel({
-		// color:'#576996',
-		// font:{fontSize:16,fontWeight:'bold', fontFamily:'Arial'},
-		// left:70,
-		// top:2,
-		// height:30,
-		// width:200,
-		// clickName:'user',
-		// text:'Fred Smith '+c
-	// });
-// 
-	// row.filter = user.text;
-	// row.add(user);
+	var eventTitle = Ti.UI.createLabel({
+		color:'#576996',
+		font:{fontSize:16,fontWeight:'bold', fontFamily:'Arial'},
+		left:10,
+		top:2,
+		height:'auto',
+		width:'auto',
+		clickName:'user',
+		text: d.title,
+	});
+
+	row.filter = eventTitle.text;
+	row.add(eventTitle);
 
 // 
 	// var fontSize = 16;
@@ -204,37 +214,53 @@ for (var c=0;c<50;c++)
 	// });
 	// row.add(comment);
 
-	var calendar = Ti.UI.createView({
+
+
+	var eventTimeIcon = Ti.UI.createView({
 		backgroundImage:'/images/custom_tableview/eventsButton.png',
 		bottom:2,
-		left:70,
+		left:10,
 		width:32,
 		clickName:'calendar',
 		height:32
 	});
-	row.add(calendar);
-
-	// var button = Ti.UI.createView({
-		// backgroundImage:'/images/custom_tableview/commentButton.png',
-		// top:35,
-		// right:5,
-		// width:36,
-		// clickName:'button',
-		// height:34
-	// });
-	// row.add(button);
-
-	var date = Ti.UI.createLabel({
+	row.add(eventTimeIcon);
+	var eventTime = Ti.UI.createLabel({
 		color:'#999',
 		font:{fontSize:13,fontWeight:'normal', fontFamily:'Arial'},
-		left:105,
+		left:55,
 		bottom:5,
 		height:20,
 		width:100,
 		clickName:'date',
-		text: data.date
+		text: d.time
 	});
-	row.add(date);
+	row.add(eventTime);
+
+	//author
+	var eventAuthorIcon = Ti.UI.createView({
+		backgroundImage:'/images/custom_tableview/eventsButton.png',
+		bottom:31,
+		left:10,
+		width:32,
+		clickName:'calendar',
+		height:32
+	});
+	row.add(eventAuthorIcon);
+	var eventAuthor = Ti.UI.createLabel({
+		color:'#999',
+		font:{fontSize:13,fontWeight:'normal', fontFamily:'Arial'},
+		left:55,
+		bottom:34,
+		height:20,
+		width:100,
+		clickName:'date',
+		text: d.authors[0]
+	});
+	row.add(eventAuthor);
+
+
+
 
 	data.push(row);
 }
