@@ -122,19 +122,19 @@ row.add(clickLabel);
 data.push(row);
 
 // when you click the header, scroll to the bottom
-row.addEventListener('click',function()
-{
-	tableView.scrollToIndex(40,{animated:true,position:Ti.UI.iPhone.TableViewScrollPosition.TOP});
-});
+// row.addEventListener('click',function()
+// {
+	// tableView.scrollToIndex(40,{animated:true,position:Ti.UI.iPhone.TableViewScrollPosition.TOP});
+// });
 
 // create update row (used when the user clicks on the row)
 function createUpdateRow(text)
 {
 	//Ti.API.info();
 	var updateRow = Ti.UI.createTableViewRow();
-	updateRow.backgroundColor = '#13386c';
-	updateRow.selectedBackgroundColor = '#13386c';
-
+	//updateRow.backgroundColor = '#13386c';
+	//updateRow.selectedBackgroundColor = '#13386c';
+	updateRow.height = 100;
 	// add custom property to identify this row
 	updateRow.isUpdateRow = true;
 	var updateRowText = Ti.UI.createLabel({
@@ -161,7 +161,9 @@ for (var c=0;c<50;c++)
 	row.height = 100;
 	row.className = 'datarow';
 	row.clickName = 'row';
-	row.resume = d.resume;
+	row.hasChild = true;
+	row.data = d;
+	
 	// var photo = Ti.UI.createView({
 		// backgroundImage:'/images/custom_tableview/user.png',
 		// top:5,
@@ -238,7 +240,7 @@ for (var c=0;c<50;c++)
 		height:20,
 		width:100,
 		clickName:'date',
-		text: d.time
+		text: row.data.time
 	});
 	row.add(eventTime);
 
@@ -260,7 +262,7 @@ for (var c=0;c<50;c++)
 		height:20,
 		width:100,
 		clickName:'date',
-		text: d.authors[0]
+		text: row.data.authors[0]
 	});
 	row.add(eventAuthor);
 	
@@ -273,7 +275,7 @@ for (var c=0;c<50;c++)
 		height:20,
 		width:'auto',
 		clickName:'date',
-		text: d.path
+		text: row.data.path
 	});
 	row.add(eventPath);
 
@@ -286,7 +288,7 @@ for (var c=0;c<50;c++)
 		height:20,
 		width:'auto',
 		clickName:'date',
-		text: d.room
+		text: row.data.room
 	});
 	row.add(eventRoom);
 	
@@ -304,21 +306,20 @@ tableView = Titanium.UI.createTableView({
 	backgroundColor:'white'
 });
 
+// create table view event listener
 tableView.addEventListener('click', function(e)
-{
-	Ti.API.info('table view row clicked - source ' + e.source.clickName);
-	var rowNum = e.index;	
-	e.source.rowold = e.source;
-	// use rowNum property on object to get row number
-	if (e.source.clickName == 'resumerow'){
-		var updaterow = e.source.rowold;		
-	} else {
-		var updateRow = createUpdateRow(e.source.resume);
+{	
+	if (e.rowData)
+	{
+		var win = Titanium.UI.createWindow({
+			title:e.rowData.data.title,
+			url: 'program-details.js',
+			data: e.rowData.data,
+			backgroundColor: '#ffffff'
+		});		
+		Titanium.UI.currentTab.open(win,{animated:true});
 	}
-
-	tableView.updateRow(rowNum,updateRow,{animationStyle:Titanium.UI.iPhone.RowAnimationStyle.LEFT});
 });
-
 win.add(tableView);
 
 
