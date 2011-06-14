@@ -174,6 +174,12 @@
 -(TiViewProxy *)viewAtIndex:(int)index
 {
 	[self lockViews];
+	// force index to be in range in case the scrollable view is rotated while scrolling
+	if (index < 0) {
+		index = 0;
+	} else if (index >= [viewProxies count]) {
+		index = [viewProxies count] - 1;
+	}
 	TiViewProxy * result = [viewProxies objectAtIndex:index];
 	[self unlockViews];
 	return result;
@@ -187,7 +193,15 @@
 	
 	if (index != NSNotFound)
 	{
-		NSArray * scrollWrappers = [[[self view] scrollview] subviews];
+		TiUIScrollableView * ourView = (TiUIScrollableView *)[self view];
+		NSArray * scrollWrappers = [[ourView scrollview] subviews];
+		if (index < [scrollWrappers count])
+		{
+			return [scrollWrappers objectAtIndex:index];
+		}
+		//Hideous hack is hideous. This should stave off the bugs until layout is streamlined
+		[ourView refreshScrollView:[[self view] bounds] readd:YES];
+		scrollWrappers = [[ourView scrollview] subviews];
 		if (index < [scrollWrappers count])
 		{
 			return [scrollWrappers objectAtIndex:index];

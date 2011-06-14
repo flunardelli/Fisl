@@ -1,4 +1,7 @@
+Ti.include('common.js');
+
 var win = Ti.UI.currentWindow;
+
 
 //var win = Titanium.UI.currentWindow;
 win.barColor = '#385292';
@@ -127,6 +130,7 @@ row.addEventListener('click',function()
 // create update row (used when the user clicks on the row)
 function createUpdateRow(text)
 {
+	//Ti.API.info();
 	var updateRow = Ti.UI.createTableViewRow();
 	updateRow.backgroundColor = '#13386c';
 	updateRow.selectedBackgroundColor = '#13386c';
@@ -136,9 +140,10 @@ function createUpdateRow(text)
 	var updateRowText = Ti.UI.createLabel({
 		color:'#fff',
 		font:{fontSize:20, fontWeight:'bold'},
-		text:text,
+		text:d.resume,
 		width:'auto',
-		height:'auto'
+		height:'auto',
+		clickName: 'resumerow'
 	});
 	updateRow.className = 'updated_row';
 	updateRow.add(updateRowText);
@@ -156,7 +161,7 @@ for (var c=0;c<50;c++)
 	row.height = 100;
 	row.className = 'datarow';
 	row.clickName = 'row';
-
+	row.resume = d.resume;
 	// var photo = Ti.UI.createView({
 		// backgroundImage:'/images/custom_tableview/user.png',
 		// top:5,
@@ -167,7 +172,7 @@ for (var c=0;c<50;c++)
 	// });
 
 	if (c % 10 == 0){		
-		row.header = "Section: " + c;
+		row.header = "Section: " + c + Date.today().toString(' - MMMM d, yyyy');
 	}
 	
 
@@ -215,20 +220,20 @@ for (var c=0;c<50;c++)
 	// row.add(comment);
 
 
-
+	//time
 	var eventTimeIcon = Ti.UI.createView({
 		backgroundImage:'/images/custom_tableview/eventsButton.png',
 		bottom:2,
 		left:10,
-		width:32,
+		width:24,
 		clickName:'calendar',
-		height:32
+		height:24
 	});
 	row.add(eventTimeIcon);
 	var eventTime = Ti.UI.createLabel({
 		color:'#999',
 		font:{fontSize:13,fontWeight:'normal', fontFamily:'Arial'},
-		left:55,
+		left:40,
 		bottom:5,
 		height:20,
 		width:100,
@@ -242,15 +247,15 @@ for (var c=0;c<50;c++)
 		backgroundImage:'/images/custom_tableview/eventsButton.png',
 		bottom:31,
 		left:10,
-		width:32,
+		width:24,
 		clickName:'calendar',
-		height:32
+		height:24
 	});
 	row.add(eventAuthorIcon);
 	var eventAuthor = Ti.UI.createLabel({
 		color:'#999',
 		font:{fontSize:13,fontWeight:'normal', fontFamily:'Arial'},
-		left:55,
+		left:40,
 		bottom:34,
 		height:20,
 		width:100,
@@ -258,10 +263,33 @@ for (var c=0;c<50;c++)
 		text: d.authors[0]
 	});
 	row.add(eventAuthor);
+	
+	//path
+	var eventPath = Ti.UI.createLabel({
+		color:'#999',
+		font:{fontSize:13,fontWeight:'normal', fontFamily:'Arial'},
+		right:10,
+		bottom:34,
+		height:20,
+		width:'auto',
+		clickName:'date',
+		text: d.path
+	});
+	row.add(eventPath);
 
-
-
-
+	//room
+	var eventRoom = Ti.UI.createLabel({
+		color:'#999',
+		font:{fontSize:13,fontWeight:'normal', fontFamily:'Arial'},
+		right:10,
+		bottom:5,
+		height:20,
+		width:'auto',
+		clickName:'date',
+		text: d.room
+	});
+	row.add(eventRoom);
+	
 	data.push(row);
 }
 
@@ -278,10 +306,16 @@ tableView = Titanium.UI.createTableView({
 
 tableView.addEventListener('click', function(e)
 {
-	Ti.API.info('table view row clicked - source ' + e.source);
+	Ti.API.info('table view row clicked - source ' + e.source.clickName);
+	var rowNum = e.index;	
+	e.source.rowold = e.source;
 	// use rowNum property on object to get row number
-	var rowNum = e.index;
-	var updateRow = createUpdateRow('You clicked on the '+e.source.clickName);
+	if (e.source.clickName == 'resumerow'){
+		var updaterow = e.source.rowold;		
+	} else {
+		var updateRow = createUpdateRow(e.source.resume);
+	}
+
 	tableView.updateRow(rowNum,updateRow,{animationStyle:Titanium.UI.iPhone.RowAnimationStyle.LEFT});
 });
 

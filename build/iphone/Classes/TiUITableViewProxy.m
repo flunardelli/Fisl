@@ -26,8 +26,33 @@
 NSArray * tableKeySequence;
 
 @implementation TiUITableViewProxy
+@synthesize sections;
+
+-(int)sectionCount
+{
+	return [sections count];
+}
+
 
 #pragma mark Internal
+
+- (id) init
+{
+	self = [super init];
+	if (self != nil)
+	{
+		sections = [[NSMutableArray array] retain];
+	}
+	return self;
+}
+
+- (void) dealloc
+{
+	[sections makeObjectsPerformSelector:@selector(setParent:) withObject:nil];
+	RELEASE_TO_NIL(sections);
+	[super dealloc];
+}
+
 
 -(TiUITableView*)tableView
 {
@@ -36,7 +61,21 @@ NSArray * tableKeySequence;
 
 -(void)viewWillDetach
 {
-    [[self tableView] detachContents];
+    for (TiUITableViewSectionProxy* section in sections) {
+        for (TiUITableViewRowProxy* row in [section rows]) {
+            [row detachView];
+        }
+        [section detachView];
+		[section setTable:nil];
+    }
+}
+
+-(void)viewDidAttach
+{
+	TiUITableView * ourView = (TiUITableView *)[self view];
+    for (TiUITableViewSectionProxy* section in sections) {
+		[section setTable:ourView];
+    }
 }
 
 -(NSArray *)keySequence
@@ -46,6 +85,105 @@ NSArray * tableKeySequence;
 		tableKeySequence = [[NSArray arrayWithObjects:@"style",@"search",@"data",@"backgroundColor",nil] retain];
 	}
 	return tableKeySequence;
+}
+
+-(NSInteger)indexForRow:(TiUITableViewRowProxy*)row
+{
+	int index = 0;
+	for (TiUITableViewSectionProxy * thisSection in sections)
+	{
+		if (thisSection == row.section)
+		{
+			return index + row.row;
+		}
+		index+=[thisSection rowCount];
+	}
+	return index;
+}
+
+-(NSInteger)sectionIndexForIndex:(NSInteger)theindex
+{
+	int index = 0;
+	int section = 0;
+	
+	for (TiUITableViewSectionProxy * thisSection in sections)
+	{
+		index+=[thisSection rowCount];
+		if (theindex < index)
+		{
+			return section;
+		}
+		section++;
+	}
+	
+	return 0;
+}
+
+-(TiUITableViewRowProxy*)rowForIndex:(NSInteger)index section:(NSInteger*)section
+{
+	int current = 0;
+	int row = index;
+	int sectionIdx = 0;
+	
+	for (TiUITableViewSectionProxy *sectionProxy in sections)
+	{
+		int rowCount = [sectionProxy rowCount];
+		if (rowCount + current > index)
+		{
+			if (section!=nil)
+			{
+				*section = sectionIdx;
+			}
+			return [sectionProxy rowAtIndex:row];
+		}
+		row -= rowCount;
+		current += rowCount;
+		sectionIdx++;
+	}
+
+	return nil;
+}
+
+-(NSIndexPath *)indexPathFromInt:(NSInteger)index
+{
+	if(index < 0)
+	{
+		return nil;
+	}
+	int section = 0;
+	int current = 0;
+	int row = index;
+	
+	for (TiUITableViewSectionProxy * thisSection in sections)
+	{
+		int rowCount = [thisSection rowCount];
+		if (rowCount + current > index)
+		{
+			return [NSIndexPath indexPathForRow:row inSection:section];
+		}
+		section++;
+		row -= rowCount;
+		current += rowCount;
+	}
+	return nil;
+}
+
+-(NSInteger)indexForIndexPath:(NSIndexPath *)path
+{
+	int index = 0;
+	int section = 0;
+	
+	for (TiUITableViewSectionProxy * thisSection in sections)
+	{
+		if (section == [path section])
+		{
+			return index + [path row];
+		}
+		section++;
+		index+=[thisSection rowCount];
+	}
+	
+	return 0;
 }
 
 -(TiUITableViewRowProxy*)makeTableViewRowFromDict:(NSDictionary*)data
@@ -77,7 +215,6 @@ NSArray * tableKeySequence;
 
 -(TiUITableViewSectionProxy*)sectionForIndex:(NSInteger)index row:(TiUITableViewRowProxy**)rowOut
 {
-	NSArray *sections = [self data];
 	int current = 0;
 	int row = index;
 	int sectionIdx = 0;
@@ -107,7 +244,12 @@ NSArray * tableKeySequence;
 
 -(TiUITableViewSectionProxy *)sectionWithHeader:(NSString *)newHeader table:(TiUITableView *)table
 {
+    // TODO: OK, this is actually kind of important.. need to do stuff like this throughout the code,
+    // to make sure that things are properly registered/unregistered.
 	id<TiEvaluator> ourContext = [self executionContext];
+    if (ourContext == nil) {
+        ourContext = [self pageContext];
+    }
 	TiUITableViewSectionProxy *result = [[TiUITableViewSectionProxy alloc] _initWithPageContext:ourContext args:nil];
 	[(KrollBridge *)ourContext registerProxy:result];
 	[self rememberProxy:result];
@@ -176,7 +318,7 @@ NSArray * tableKeySequence;
 	
 	int c = 0;
 	
-	for (TiUITableViewSectionProxy *section in [(TiUITableView*)[self view] sections])
+	for (TiUITableViewSectionProxy *section in sections)
 	{
 		for (TiUITableViewRowProxy *row in [section rows])
 		{
@@ -200,9 +342,7 @@ NSArray * tableKeySequence;
 	
 	TiUITableViewRowProxy *newrow = [self tableRowFromArg:data];
 	TiUITableView *table = [self viewInitialized]?[self tableView]:nil;
-	
-	NSArray *sections = [self data];
-	
+		
 	int current = 0;
 	int row = index;
 	int sectionIdx = 0;
@@ -256,9 +396,7 @@ NSArray * tableKeySequence;
 	int index = [TiUtils intValue:[args objectAtIndex:0]];
 	NSDictionary *anim = [args count] > 1 ? [args objectAtIndex:1] : nil;
 	
-	
-	NSArray *sections = [self data];
-	
+		
 	if ([sections count]==0)
 	{
 		NSLog(@"[WARN] no rows found in table, ignoring delete");
@@ -302,7 +440,6 @@ NSArray * tableKeySequence;
 	
 	TiUITableView *table = [self viewInitialized]?[self tableView]:nil;
 	
-	NSArray *sections = [self data];
 	if ([sections count]==0)
 	{
 		[self throwException:@"invalid number of rows" subreason:nil location:CODELOCATION];
@@ -381,7 +518,6 @@ NSArray * tableKeySequence;
 
 	TiUITableView *table = [self viewInitialized]?[self tableView]:nil;
 	
-	NSArray *sections = [self data];
 	if ([sections count]==0)
 	{
 		[self throwException:@"invalid number of rows" subreason:nil location:CODELOCATION];
@@ -458,7 +594,6 @@ NSArray * tableKeySequence;
 
 	TiUITableView *table = [self viewInitialized]?[self tableView]:nil;
 
-	NSArray *sections = [self data];
 	if (sections == nil || [sections count]==0)
 	{
 		[self setData:[NSArray arrayWithObject:data] withObject:anim];
@@ -562,11 +697,7 @@ NSArray * tableKeySequence;
 
 -(NSArray*)data
 {
-	// viewAttached now checks for windowOpened in addition to attachment, so we have to check just the view here
-	if (view == nil) {
-		return nil;
-	}
-	return [(TiUITableView*)[self view] sections];
+	return sections;
 }
 
 -(void)setContentInsets:(id)args

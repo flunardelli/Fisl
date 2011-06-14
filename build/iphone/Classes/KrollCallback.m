@@ -174,3 +174,8 @@ static NSLock *callbackLock;
 }
 
 @end
+
+@implementation KrollFunction
+@synthesize remoteFunction, remoteBridge;
+
+@end

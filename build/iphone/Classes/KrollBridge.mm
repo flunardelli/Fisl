@@ -334,7 +334,13 @@ CFMutableSetRef	krollBridgeRegistry = nil;
 
 - (void)scriptError:(NSString*)message
 {
+    evaluationError = YES;
 	[[TiApp app] showModalError:message];
+}
+
+-(BOOL)evaluationError
+{
+    return evaluationError;
 }
 
 - (void)evalFileOnThread:(NSString*)path context:(KrollContext*)context_ 
@@ -419,6 +425,9 @@ CFMutableSetRef	krollBridgeRegistry = nil;
 			NSLog(@"[ERROR] Script Error = %@.",[TiUtils exceptionMessage:excm]);
 			[self scriptError:[TiUtils exceptionMessage:excm]];
 		}
+        else {
+            evaluationError = NO;
+        }
 	}
 	
 	TiStringRelease(jsCode);
@@ -875,6 +884,33 @@ CFMutableSetRef	krollBridgeRegistry = nil;
 
 	return result;
 }
+
++ (KrollBridge *)krollBridgeForThreadName:(NSString *)threadName;
+{
+	if(threadName == nil)
+	{
+		return nil;
+	}
+
+	KrollBridge * result=nil;
+	OSSpinLockLock(&krollBridgeRegistryLock);
+	int bridgeCount = CFSetGetCount(krollBridgeRegistry);
+	KrollBridge * registryObjects[bridgeCount];
+	CFSetGetValues(krollBridgeRegistry, (const void **)registryObjects);
+	for (int currentBridgeIndex = 0; currentBridgeIndex < bridgeCount; currentBridgeIndex++)
+	{
+		KrollBridge * currentBridge = registryObjects[currentBridgeIndex];
+		if ([[[currentBridge krollContext] threadName] isEqualToString:threadName])
+		{
+			result = [[currentBridge retain] autorelease];
+			break;
+		}
+	}
+	OSSpinLockUnlock(&krollBridgeRegistryLock);
+
+	return result;
+}
+
 
 -(int)forceGarbageCollectNow;
 {

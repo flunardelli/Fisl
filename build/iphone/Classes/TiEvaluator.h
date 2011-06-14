@@ -23,6 +23,8 @@
 
 - (void)evalFile:(NSString*)file;
 
+- (BOOL)evaluationError;
+
 // NOTE: this must only be called on a thread JS thread or an exception will occur
 - (id)evalJSAndWait:(NSString*)code;
 

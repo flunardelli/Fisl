@@ -4,26 +4,58 @@
 	<dict>
 		<key>classes</key>
 		<dict>
+<key>global</key>
+<dict>
+</dict>
 </dict>
 
 		<key>classes_density</key>
 		<dict>
+<key>global</key>
+<dict>
+</dict>
 </dict>
 
 		<key>ids</key>
 		<dict>
+<key>global</key>
+<dict>
+<key>eventSimpleLabel</key>
+<dict>
+<key>color</key>
+<string>#999999</string>
+<key>font</key>
+<dict>
+<key>fontWeight</key>
+<string>normal</string>
+<key>fontSize</key>
+<string>13px</string>
+<key>fontFamily</key>
+<string>Arial</string>
+</dict>
+</dict>
+</dict>
 </dict>
 
 		<key>ids_density</key>
 		<dict>
+<key>global</key>
+<dict>
+</dict>
 </dict>
 
 		<key>tags</key>
 		<dict>
+<key>global</key>
+<dict>
+</dict>
 </dict>
 
 		<key>tags_density</key>
 		<dict>
+<key>global</key>
+<dict>
+</dict>
 </dict>
 
 	</dict>

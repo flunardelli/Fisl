@@ -17,17 +17,17 @@
 
 -(id)version
 {
-	return @"1.7.0";
+	return @"1.7.1";
 }
 
 -(id)buildDate
 {
-	return @"05/11/11 16:54";
+	return @"06/13/11 15:33";
 }
 
 -(id)buildHash
 {
-	return @"578e1df...";
+	return @"84a68cc...";
 }
 
 +(BOOL)shouldRegisterOnInit
