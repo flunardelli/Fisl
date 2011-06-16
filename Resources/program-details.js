@@ -7,41 +7,6 @@ var win = Ti.UI.currentWindow;
 win.barColor = '#385292';
 
 
-// 
-// // create table view data object
-// var data = [];
-// 
-// data[0] = Ti.UI.createTableViewRow({hasChild:true,title:'Header should be Foo',header:'Foo'});
-// data[1] = Ti.UI.createTableViewRow({hasDetail:true,title:'Row 2'});
-// data[2] = Ti.UI.createTableViewRow({hasCheck:true,title:'Header should be Bar',header:'Bar'});
-// data[3] = Ti.UI.createTableViewRow({title:'Footer should be Bye',footer:'Bye'});
-// 
-// // now do it with direct properties
-// var row = Ti.UI.createTableViewRow();
-// row.header = "Blah";
-// row.title = "Header should be Blah";
-// data[4] = row;
-// 
-// // create table view
-// var tableview = Titanium.UI.createTableView({
-	// data:data
-// });
-// 
-// // create table view event listener
-// tableview.addEventListener('click', function(e)
-// {
-	// // event data
-	// var index = e.index;
-	// var section = e.section;
-	// var row = e.row;
-	// var rowdata = e.rowData;
-	// Titanium.UI.createAlertDialog({title:'Table View',message:'row ' + row + ' index ' + index + ' section ' + section  + ' row data ' + rowdata}).show();
-// });
-// 
-// // add table view to the window
-// Titanium.UI.currentWindow.add(tableview);
-
-
 
 /*
  * trilha: Desktop e Distribuições
@@ -69,53 +34,28 @@ status
 confirmado
  */
 
-var d = {
-	path: "Desktop e Distribuições",
-	room: "41-A fisl 1",
-	datefull: "2010-07-21 09:00:00",
-	time: "09:30 - 10:00",
-	title: "LTSP-cluster : Large scale thin-clients deployments",
-	resume: "LTSP-Cluster is an open source project aiming at deploying and managing a large number (several thousands) of multiplatform thin-clients over a network by adding a set of additional components to LTSP such as a load-balancer, and a central management and reporting interface.",
-	authors: ['Patrice Albaret','Fernando Laudares Camargos','Stéphane Graber'],
-	duration: "60 minutos",
-	status: "confirmado"
-};
+// var d = {
+	// path: "Desktop e Distribuições",
+	// room: "41-A fisl 1",
+	// datefull: "2010-07-21 09:00:00",
+	// time: "09:30 - 10:00",
+	// title: "LTSP-cluster : Large scale thin-clients deployments",
+	// resume: "LTSP-Cluster is an open source project aiming at deploying and managing a large number (several thousands) of multiplatform thin-clients over a network by adding a set of additional components to LTSP such as a load-balancer, and a central management and reporting interface.",
+	// authors: ['Patrice Albaret','Fernando Laudares Camargos','Stéphane Graber'],
+	// duration: "60 minutos",
+	// status: "confirmado"
+// };
 
 var tableView;
 var data = [];
 
-// create first row
-// var row = Ti.UI.createTableViewRow();
-// row.backgroundColor = '#576996';
-// row.selectedBackgroundColor = '#385292';
-// row.height = 40;
-// var clickLabel = Titanium.UI.createLabel({
-	// text:'Click different parts of the row',
-	// color:'#fff',
-	// textAlign:'center',
-	// font:{fontSize:14},
-	// width:'auto',
-	// height:'auto'
-// });
-// row.className = 'header';
-// row.add(clickLabel);
-// data.push(row);
 
-// when you click the header, scroll to the bottom
-// row.addEventListener('click',function()
-// {
-	// tableView.scrollToIndex(40,{animated:true,position:Ti.UI.iPhone.TableViewScrollPosition.TOP});
-// });
-
-// create update row (used when the user clicks on the row)
 function createUpdateRow(text)
 {
-	//Ti.API.info();
 	var updateRow = Ti.UI.createTableViewRow();
 	//updateRow.backgroundColor = '#13386c';
 	//updateRow.selectedBackgroundColor = '#13386c';
 	updateRow.height = 100;
-	// add custom property to identify this row
 	updateRow.isUpdateRow = true;
 	var updateRowText = Ti.UI.createLabel({
 		color:'#fff',
@@ -129,18 +69,15 @@ function createUpdateRow(text)
 	updateRow.add(updateRowText);
 	return updateRow;
 }
-// create a var to track the active row
 var currentRow = null;
 var currentRowIndex = null;
-
-// create the rest of the rows
 
 var row = Ti.UI.createTableViewRow();
 row.selectedBackgroundColor = '#fff';
 row.height = 100;
 row.className = 'datarow';
 row.clickName = 'row';
-row.data = d;
+row.data = win.data;
 
 var c = 0;
 // var photo = Ti.UI.createView({
@@ -177,7 +114,7 @@ var eventTitle = Ti.UI.createLabel({
 	height:'auto',
 	width:'auto',
 	clickName:'user',
-	text: d.title,
+	text: row.data.title,
 });
 
 row.filter = eventTitle.text;
@@ -271,19 +208,14 @@ var eventRoom = Ti.UI.createLabel({
 });
 row.add(eventRoom);
 
-
-
-
-
 data.push(row);
-
 
 var row = Ti.UI.createTableViewRow();
 row.selectedBackgroundColor = '#fff';
 row.height = 100;
 row.className = 'datarow';
 row.clickName = 'row';
-row.data = d;
+row.data = win.data;
 
 row.header = "Resume";
 

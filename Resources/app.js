@@ -6,7 +6,7 @@ var tabGroup = Titanium.UI.createTabGroup();
 var winNews = Titanium.UI.createWindow({  
     title:'News',
     backgroundColor:'#fff',
-    url: 'news-main.js'
+    url: 'parser.js'
 });
 
 var tabNews = Titanium.UI.createTab({  
