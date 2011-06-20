@@ -1,104 +1,29 @@
 Ti.include('common.js');
-
+//Ti.include('lib-jlinq.js');
 var win = Ti.UI.currentWindow;
-
-
-//var win = Titanium.UI.currentWindow;
 win.barColor = '#385292';
 
+var slots = JSON.parse(Ti.App.Properties.getString('dataProviderSlots'));
 
-// 
-// // create table view data object
-// var data = [];
-// 
-// data[0] = Ti.UI.createTableViewRow({hasChild:true,title:'Header should be Foo',header:'Foo'});
-// data[1] = Ti.UI.createTableViewRow({hasDetail:true,title:'Row 2'});
-// data[2] = Ti.UI.createTableViewRow({hasCheck:true,title:'Header should be Bar',header:'Bar'});
-// data[3] = Ti.UI.createTableViewRow({title:'Footer should be Bye',footer:'Bye'});
-// 
-// // now do it with direct properties
-// var row = Ti.UI.createTableViewRow();
-// row.header = "Blah";
-// row.title = "Header should be Blah";
-// data[4] = row;
-// 
-// // create table view
-// var tableview = Titanium.UI.createTableView({
-	// data:data
-// });
-// 
-// // create table view event listener
-// tableview.addEventListener('click', function(e)
-// {
-	// // event data
-	// var index = e.index;
-	// var section = e.section;
-	// var row = e.row;
-	// var rowdata = e.rowData;
-	// Titanium.UI.createAlertDialog({title:'Table View',message:'row ' + row + ' index ' + index + ' section ' + section  + ' row data ' + rowdata}).show();
-// });
-// 
-// // add table view to the window
-// Titanium.UI.currentWindow.add(tableview);
+//var slots = jlinq.from(slotsData).sort('date','hour','minute').select();
+//slots = jlinq.from(slots).sort('hour').select();
 
-
-
-/*
- * trilha: Desktop e Distribuições
-
-sala: 41-A fisl 1
-Data: 2010-07-21 09:00:00
-
-título: LTSP-cluster : Large scale thin-clients deployments
-
-resumo: 
-LTSP-Cluster is an open source project aiming at deploying and managing a large number (several thousands) of multiplatform thin-clients over a network by adding a set of additional components to LTSP such as a load-balancer, and a central management and reporting interface.
-
-trilha
-Desktop e Distribuições
-
-autores
-Patrice Albaret, 
-Fernando Laudares Camargos, 
-Stéphane Graber
-
-duração
-60 minutos
-
-status
-confirmado
- */
-
-var d = {
-	path: "Desktop e Distribuições",
-	room: "41-A fisl 1",
-	datefull: "2010-07-21 09:00:00",
-	time: "09:30 - 10:00",
-	title: "LTSP-cluster : Large scale thin-clients deployments",
-	resume: "LTSP-Cluster is an open source project aiming at deploying and managing a large number (several thousands) of multiplatform thin-clients over a network by adding a set of additional components to LTSP such as a load-balancer, and a central management and reporting interface.",
-	authors: ['Patrice Albaret','Fernando Laudares Camargos','Stéphane Graber'],
-	duration: "60 minutos",
-	status: "confirmado"
-};
-
-//
-// CREATE SEARCH BAR
-//
+//{"id":"157","date":"2011-06-30","hour":"12","minute":"00","room":"3","candidate":"244","area":"12",
+//"title":"Razorback - Detectando amea\u00e7as quase em tempo real.","value":"0","colspan":"3","color":"C9FFFF",
+//"abstract":"Atualmente as amea\u00e7as client-side tem crescido muito e os metodos de detec\u00e7\u00e3o tem falhado visto a complexidade das t\u00e9cnicas e em especial o tempo e recursos necess\u00e1rios para conseguir analisar isso em tempo real  pela grande quantidade de tr\u00e1fego existente nas redes atuais. O projeto Razorback foi criado pelos mesmos desenvolvedores do Snort para tentar mitigar esse problemas fazendo verifica\u00e7\u00e3o de varias ataques clientes side em paralelo ao trafego em tempo real.",
+//"level":"intermediate","zone":"3"
 var search = Titanium.UI.createSearchBar({
 	barColor:'#385292',
 	showCancel:false
 });
-search.addEventListener('change', function(e)
-{
-e.value; // search string as user types
+search.addEventListener('change', function(e){
+	e.value; // search string as user types
 });
-search.addEventListener('return', function(e)
-{
-search.blur();
+search.addEventListener('return', function(e){
+	search.blur();
 });
-search.addEventListener('cancel', function(e)
-{
-search.blur();
+search.addEventListener('cancel', function(e){
+	search.blur();
 });
 
 var tableView;
@@ -154,15 +79,31 @@ var currentRow = null;
 var currentRowIndex = null;
 
 // create the rest of the rows
-for (var c=0;c<50;c++)
+var lastHeader = "";
+for (var c=0;c<slots.length;c++)
 {
+	
+	var d = slots[c];
 	var row = Ti.UI.createTableViewRow();
-	row.selectedBackgroundColor = '#fff';
-	row.height = 100;
+	//row.selectedBackgroundColor = '#fff';
+	row.backgroundColor = '#dfdfdf';
+	row.height =  'auto' ;
 	row.className = 'datarow';
 	row.clickName = 'row';
 	row.hasChild = true;
+	
+	
+	d.time = d.hour +':' +d.minute;
 	row.data = d;
+	
+	
+	var headerSection = d.date + ' - ' + d.time;
+	
+	if (headerSection != lastHeader){
+		row.header = headerSection;
+		lastHeader = headerSection;
+	}
+	
 	
 	// var photo = Ti.UI.createView({
 		// backgroundImage:'/images/custom_tableview/user.png',
@@ -173,135 +114,23 @@ for (var c=0;c<50;c++)
 		// clickName:'photo'
 	// });
 
-	if (c % 10 == 0){		
-		row.header = "Section: " + c + Date.today().toString(' - MMMM d, yyyy');
-	}
+	//if (c % 10 == 0){		
+	//	row..add = "Section: " + c + Date.today().toString(' - MMMM d, yyyy');
+	//}
 	
+	//var rowContainer = createSlotView(d);
+	//var bgcolor = rowContainer.backgroundColor;
 
-	//row.add(photo);
-
-	var headerView = Ti.UI.createView({
-		width:  'auto',
-		opacity: 0.5
-	});
-	
-	var footerView = Ti.UI.createView({
-		width:  'auto',
-		opacity: 0.5
-	});
-
-	var eventTitle = Ti.UI.createLabel({
-		color:'#576996',
-		font:{fontSize:16,fontWeight:'bold', fontFamily:'Arial'},
-		left:10,
-		top:2,
-		height:'auto',
-		width:'auto',
-		clickName:'user',
-		text: d.title,
-	});
-
-	row.filter = eventTitle.text;
-	row.add(eventTitle);
-
-// 
-	// var fontSize = 16;
-	// if (Titanium.Platform.name == 'android') {
-		// fontSize = 14;
-	// }
-	// var comment = Ti.UI.createLabel({
-		// color:'#222',
-		// font:{fontSize:fontSize,fontWeight:'normal', fontFamily:'Arial'},
-		// left:70,
-		// top:21,
-		// height:50,
-		// width:200,
-		// clickName:'comment',
-		// text:'Got some fresh fruit, conducted some business, took a nap'
-	// });
-	// row.add(comment);
-
-
-	//time
-	var eventTimeIcon = Ti.UI.createView({
-		backgroundImage:'/images/custom_tableview/eventsButton.png',
-		bottom:2,
-		left:10,
-		width:24,
-		clickName:'calendar',
-		height:24
-	});
-	row.add(eventTimeIcon);
-	var eventTime = Ti.UI.createLabel({
-		color:'#999',
-		font:{fontSize:13,fontWeight:'normal', fontFamily:'Arial'},
-		left:40,
-		bottom:5,
-		height:20,
-		width:100,
-		clickName:'date',
-		text: row.data.time
-	});
-	row.add(eventTime);
-
-	//author
-	var eventAuthorIcon = Ti.UI.createView({
-		backgroundImage:'/images/custom_tableview/eventsButton.png',
-		bottom:31,
-		left:10,
-		width:24,
-		clickName:'calendar',
-		height:24
-	});
-	row.add(eventAuthorIcon);
-	var eventAuthor = Ti.UI.createLabel({
-		color:'#999',
-		font:{fontSize:13,fontWeight:'normal', fontFamily:'Arial'},
-		left:40,
-		bottom:34,
-		height:20,
-		width:100,
-		clickName:'date',
-		text: row.data.authors[0]
-	});
-	row.add(eventAuthor);
-	
-	//path
-	var eventPath = Ti.UI.createLabel({
-		color:'#999',
-		font:{fontSize:13,fontWeight:'normal', fontFamily:'Arial'},
-		right:10,
-		bottom:34,
-		height:20,
-		width:'auto',
-		clickName:'date',
-		text: row.data.path
-	});
-	row.add(eventPath);
-
-	//room
-	var eventRoom = Ti.UI.createLabel({
-		color:'#999',
-		font:{fontSize:13,fontWeight:'normal', fontFamily:'Arial'},
-		right:10,
-		bottom:5,
-		height:20,
-		width:'auto',
-		clickName:'date',
-		text: row.data.room
-	});
-	row.add(eventRoom);
-	
+	//row.add(rowContainer);
 	data.push(row);
 }
 
 
-//
-// create table view (
-//
 tableView = Titanium.UI.createTableView({
 	data:data,
 	search:search,
+	separatorStyle:1,
+	separatorColor:'#ffffff',
 	filterAttribute:'filter',
 	backgroundColor:'white'
 });
@@ -321,7 +150,3 @@ tableView.addEventListener('click', function(e)
 	}
 });
 win.add(tableView);
-
-
-
-
